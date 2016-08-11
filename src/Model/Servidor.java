@@ -6,15 +6,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Servidor {
-    
+
     private final ArrayList<Cliente> clientes;
     private ArrayList<Usuario> usuarios;
     private final int port;
-    
+
     public Servidor(int port) throws IOException, ClassNotFoundException {
         this.port = port;
         clientes = new ArrayList<>();
@@ -33,7 +31,7 @@ public class Servidor {
     public void ligarServidor() throws IOException {
         ServerSocket server = new ServerSocket(port);
         System.out.println("Servidor Iniciado com sucesso");
-        
+        //aceitando novas conexões
         while (true) {
             Socket cliente = server.accept();
             Cliente c = new Cliente(cliente, this);
@@ -50,14 +48,17 @@ public class Servidor {
             System.out.println("Cliente " + c.getIp() + " desconectou.");
         }
     }
-    
+
+    //cadastrando um novo usuario
     private void cadastrar(String nome, String senha, Cliente c) throws IOException {
+        //verificando se já existe um usuario com o mesmo nome
         for (Usuario u : usuarios) {
             if (u.getName().equals(nome)) {
                 //enviar a msg de erro de acordo com o protocolo
                 return;
             }
         }
+        //criando novo usuario
         Usuario u = new Usuario(nome, senha);
         usuarios.add(u);
         //enviar msg para o cliente informando que o usuario foi cadastrado
@@ -66,6 +67,6 @@ public class Servidor {
 
     //Tratando todas as msgs em que o cliente manda para o servidor
     public void tratarMsg(String msg, Cliente cliente) {
-        
+
     }
 }
