@@ -30,7 +30,7 @@ public class Cliente implements Runnable {
         try {
             Scanner sc = new Scanner(cliente.getInputStream());
             while (sc.hasNextLine()) {
-                server.tratarMsg(sc.nextLine(), cliente);
+                server.tratarMsg(sc.nextLine(), this);
             }
         } catch (IOException ex) {
             server.desconectarCliente(this);
