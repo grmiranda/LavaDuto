@@ -8,10 +8,10 @@ public class Usuario implements Serializable{
     private final String password;
     private boolean online;
 
-    public Usuario(String name, String password, boolean online) {
+    public Usuario(String name, String password) {
         this.name = name;
         this.password = password;
-        this.online = online;
+        this.online = false;
     }
 
     public String getName() {
