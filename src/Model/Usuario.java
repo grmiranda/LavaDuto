@@ -13,7 +13,7 @@ public class Usuario implements Serializable{
         this.password = password;
         this.online = online;
     }
-
+    
     public String getName() {
         return name;
     }
