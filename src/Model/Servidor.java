@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Servidor {
 
     private final ArrayList<Cliente> clientes;
+    private LinkedList<Arquivo> arquivos;
     private ArrayList<Usuario> usuarios;
     private final int port;
 
