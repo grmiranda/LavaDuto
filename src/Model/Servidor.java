@@ -8,12 +8,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Servidor {
-
+    
     private ArrayList<Usuario> usuarios;
+    private final ArrayList<Arquivo> arquivos;
     private final int port;
-
+    
     public Servidor(int port) throws IOException, ClassNotFoundException {
         this.port = port;
+        this.arquivos = new ArrayList<>();
 
         //Carregando os usuarios do sistema
         try {
@@ -33,7 +35,7 @@ public class Servidor {
         while (true) {
             Socket cliente = server.accept();
             Cliente c = new Cliente(cliente, this);
-
+            
             System.out.println("Cliente " + c.getIp() + " conectou");
             new Thread(c).start();
         }
@@ -69,7 +71,7 @@ public class Servidor {
         Sistema.SalvarSistema(usuarios);
         System.out.println("Cliente " + c.getIp() + " cadastrou o usuario " + nome);
     }
-
+    
     private void logarUsuario(String nome, Cliente c) throws IOException {
         //buscando os usuarios
         for (Usuario u : usuarios) {
@@ -79,7 +81,7 @@ public class Servidor {
                     //avisando ao cliente que o usuario ja esta online
                     c.enviarMsg("#06:1");
                     System.out.println("Cliente " + c.getIp() + " falhou ao logar");
-
+                    
                 } else {
                     //logando o cliente
                     u.setOnline(true);
@@ -90,7 +92,7 @@ public class Servidor {
             }
         }
     }
-
+    
     private void login(String nome, String senha, Cliente c) throws IOException {
         Usuario aux = new Usuario(nome, senha);
         for (Usuario u : usuarios) {
@@ -115,6 +117,42 @@ public class Servidor {
         c.enviarMsg("#06:0");
         System.out.println("Cliente " + c.getIp() + " falhou ao logar");
     }
+    
+    private void atualizarArq(Cliente c) throws IOException {
+        String[] arq = new String[arquivos.size()];
+        String[] ips = new String[arquivos.size()];
+        
+        int i = 0;
+        
+        for (Arquivo a : arquivos) {
+            arq[i] = a.getName();
+            ips[i] = a.getIpOrigem();
+            i++;
+        }
+        
+        String msg = "#14:" + arquivos.size();
+        
+        for (int j = 0; j < arquivos.size(); j++) {
+            msg = msg + ":" + arq[j] + ":" + ips[j];
+        }
+        
+        c.enviarMsg(msg);
+    }
+    
+    private void listaArq(String[] arq, Cliente c) {
+        for (String aux : arq) {
+            Arquivo a = new Arquivo(aux, c.getIp());
+            arquivos.add(a);
+        }
+    }
+    
+    public void remArq(Cliente c) {
+        for (Arquivo a : arquivos) {
+            if (a.getIpOrigem().equals(c.getIp())) {
+                arquivos.remove(a);
+            }
+        }
+    }
 
     //Tratando todas as msgs em que o cliente manda para o servidor
     public void tratarMsg(String msg, Cliente cliente) throws IOException {
@@ -126,6 +164,7 @@ public class Servidor {
         #07 - logar usuario(nome)
         #08 - atualizar arq
         #09 - deslogar(nome)
+        #15 - lista de arquivos
          */
         switch (codigo) {
             case ("#01"):
@@ -137,8 +176,20 @@ public class Servidor {
             case ("#07"):
                 logarUsuario(info[1], cliente);
                 break;
+            case ("#08"):
+                atualizarArq(cliente);
+                break;
             case ("#09"):
                 desconectarCliente(cliente);
+                break;
+            case ("#15"):
+                int tam = Integer.parseInt(info[1]);
+                String aux[] = new String[tam];
+                for (int i = 0; i < tam; i++) {
+                    aux[i] = info[2 + i];
+                }
+                remArq(cliente);
+                listaArq(aux, cliente);
                 break;
         }
     }
