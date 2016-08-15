@@ -50,18 +50,18 @@ public class Servidor {
     }
 
     //cadastrando um novo usuario
-    private void cadastrar(String nome, String senha) throws IOException {
+    private void cadastrar(String nome, String senha, Cliente c) throws IOException {
         //verificando se já existe um usuario com o mesmo nome
         for (Usuario u : usuarios) {
             if (u.getName().equals(nome)) {
-                //enviar a msg de erro de acordo com o protocolo
+                    c.enviarMsg("#03");
                 return;
             }
         }
         //criando novo usuario
         Usuario u = new Usuario(nome, senha);
         usuarios.add(u);
-        //enviar msg para o cliente informando que o usuario foi cadastrado
+        c.enviarMsg("#02");
         Sistema.SalvarSistema(usuarios);
     }
 
