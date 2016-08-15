@@ -118,12 +118,13 @@ public class Servidor {
         System.out.println("Cliente " + c.getIp() + " falhou ao logar");
     }
     
+    //atualizando a lista de arq
     private void atualizarArq(Cliente c) throws IOException {
         String[] arq = new String[arquivos.size()];
         String[] ips = new String[arquivos.size()];
         
         int i = 0;
-        
+        //obtendo o nome e o endereço de origem do arquivo
         for (Arquivo a : arquivos) {
             arq[i] = a.getName();
             ips[i] = a.getIpOrigem();
@@ -131,14 +132,15 @@ public class Servidor {
         }
         
         String msg = "#14:" + arquivos.size();
-        
+        //formando a string
         for (int j = 0; j < arquivos.size(); j++) {
             msg = msg + ":" + arq[j] + ":" + ips[j];
         }
-        
+        //enviando ao cliente
         c.enviarMsg(msg);
     }
     
+    //listas de todos os arquivos
     private void listaArq(String[] arq, Cliente c) {
         for (String aux : arq) {
             Arquivo a = new Arquivo(aux, c.getIp());
@@ -146,6 +148,7 @@ public class Servidor {
         }
     }
     
+    //removendo os arquivos do cliente
     public void remArq(Cliente c) {
         for (Arquivo a : arquivos) {
             if (a.getIpOrigem().equals(c.getIp())) {
