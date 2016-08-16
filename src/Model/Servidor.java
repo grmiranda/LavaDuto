@@ -194,6 +194,7 @@ public class Servidor {
                 }
                 remArq(cliente);
                 listaArq(aux, cliente);
+                System.out.println(cliente.getUserName() + " atualizou a lista de arquivos");
                 break;
         }
     }
