@@ -1,21 +1,26 @@
 package View;
 
-import Controller.Controller;
+import Controller.ServerController;
 import java.io.IOException;
+import java.net.BindException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        try{
+        int port = 0;
+        try {
             Scanner sc = new Scanner(System.in);
-            System.out.println("Digite a porta do servidor:");
-            int port = Integer.parseInt(sc.nextLine());
-            Controller c = new Controller(port);
+            System.out.println("Informe a porta do servidor");
+            port = Integer.parseInt(sc.nextLine());
+            ServerController c = new ServerController(port);
             c.ligarServidor();
-        } catch (NumberFormatException ex){
-            System.out.println("porta invalida");
-        } catch (IllegalArgumentException ex){
-            System.out.println("Porta invalidas");
+        } catch (NumberFormatException ex) {
+            System.out.println("Porta invalida");
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Porta invalida");
+        } catch (BindException ex) {
+            System.out.println("Porta " + port + " já está sendo utilizada.");
         }
     }
 }
