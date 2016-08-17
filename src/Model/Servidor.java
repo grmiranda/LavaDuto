@@ -127,9 +127,11 @@ public class Servidor {
         int i = 0;
         //obtendo o nome e o endereço de origem do arquivo
         for (Arquivo a : arquivos) {
-            arq[i] = a.getName();
-            ips[i] = a.getIpOrigem();
-            i++;
+            if (!a.getIpOrigem().equals(c.getIp())) {
+                arq[i] = a.getName();
+                ips[i] = a.getIpOrigem();
+                i++;
+            }
         }
 
         String msg = "#14:" + arquivos.size();
