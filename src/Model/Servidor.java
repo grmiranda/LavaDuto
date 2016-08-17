@@ -134,9 +134,9 @@ public class Servidor {
             }
         }
 
-        String msg = "#14:" + arquivos.size();
+        String msg = "#14:" + i;
         //formando a string
-        for (int j = 0; j < arquivos.size(); j++) {
+        for (int j = 0; j < i; j++) {
             msg = msg + ":" + arq[j] + ":" + ips[j];
         }
         //enviando ao cliente
