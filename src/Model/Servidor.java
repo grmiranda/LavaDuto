@@ -6,14 +6,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Servidor {
 
     private ArrayList<Usuario> usuarios;
     private final ArrayList<Arquivo> arquivos;
     private final int port;
-
+    
     public Servidor(int port) throws IOException, ClassNotFoundException {
         this.port = port;
         this.arquivos = new ArrayList<>();
@@ -144,7 +143,7 @@ public class Servidor {
     }
 
     //listas de todos os arquivos
-    private void listaArq(String[] arq, Cliente c) {
+    synchronized private void listaArq(String[] arq, Cliente c) {
         for (String aux : arq) {
             Arquivo a = new Arquivo(aux, c.getIp());
             arquivos.add(a);
@@ -152,7 +151,7 @@ public class Servidor {
     }
 
     //removendo os arquivos do cliente
-    public void remArq(Cliente c) {
+    synchronized public void remArq(Cliente c) {
         if (!arquivos.isEmpty()){
             for (Arquivo a : arquivos) {
                 if (a.getIpOrigem().equals(c.getIp())) {

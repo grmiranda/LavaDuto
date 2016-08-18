@@ -6,7 +6,7 @@ public class Usuario implements Serializable{
     
     private final String name;
     private final String password;
-    private boolean online;
+    private transient boolean online;
 
     public Usuario(String name, String password) {
         this.name = name;
