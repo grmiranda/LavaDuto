@@ -153,9 +153,11 @@ public class Servidor {
 
     //removendo os arquivos do cliente
     public void remArq(Cliente c) {
-        for (Arquivo a : arquivos) {
-            if (a.getIpOrigem().equals(c.getIp())) {
-                arquivos.remove(a);
+        if (!arquivos.isEmpty()){
+            for (Arquivo a : arquivos) {
+                if (a.getIpOrigem().equals(c.getIp())) {
+                    arquivos.remove(a);
+                }
             }
         }
     }
