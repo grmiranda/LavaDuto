@@ -35,14 +35,14 @@ public class Servidor {
         while (true) {
             Socket cliente = server.accept();
             Cliente c = new Cliente(cliente, this);
-
+            //iniciando um novo cliente
             System.out.println("Cliente " + c.getIp() + " conectou");
             new Thread(c).start();
         }
     }
 
     //desconectando o cliente
-    public void desconectarCliente(Cliente c) {
+    synchronized public void desconectarCliente(Cliente c) {
         for (Usuario u : usuarios) {
             if (u.getName().equals(c.getUserName())) {
                 System.out.println(c.getUserName() + " desconectou.");
@@ -53,7 +53,7 @@ public class Servidor {
     }
 
     //cadastrando um novo usuario
-    private void cadastrar(String nome, String senha, Cliente c) throws IOException {
+    synchronized private void cadastrar(String nome, String senha, Cliente c) throws IOException {
         //verificando se já existe um usuario com o mesmo nome
         for (Usuario u : usuarios) {
             if (u.getName().equals(nome)) {
@@ -72,7 +72,7 @@ public class Servidor {
         System.out.println("Cliente " + c.getIp() + " cadastrou o usuario " + nome);
     }
 
-    private void logarUsuario(String nome, Cliente c) throws IOException {
+    synchronized private void logarUsuario(String nome, Cliente c) throws IOException {
         //buscando os usuarios
         for (Usuario u : usuarios) {
             //procurando o usuario com o nome do cliente
@@ -93,7 +93,7 @@ public class Servidor {
         }
     }
 
-    private void login(String nome, String senha, Cliente c) throws IOException {
+    synchronized private void login(String nome, String senha, Cliente c) throws IOException {
         Usuario aux = new Usuario(nome, senha);
         for (Usuario u : usuarios) {
             //buscando o usuario
@@ -119,7 +119,7 @@ public class Servidor {
     }
 
     //atualizando a lista de arq
-    private void atualizarArq(Cliente c) throws IOException {
+    synchronized private void atualizarArq(Cliente c) throws IOException {
         String[] arq = new String[arquivos.size()];
         String[] ips = new String[arquivos.size()];
 
