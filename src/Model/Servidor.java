@@ -12,7 +12,7 @@ public class Servidor {
     private ArrayList<Usuario> usuarios;
     private final ArrayList<Arquivo> arquivos;
     private final int port;
-    
+
     public Servidor(int port) throws IOException, ClassNotFoundException {
         this.port = port;
         this.arquivos = new ArrayList<>();
@@ -152,13 +152,15 @@ public class Servidor {
 
     //removendo os arquivos do cliente
     synchronized public void remArq(Cliente c) {
-        if (!arquivos.isEmpty()){
+        ArrayList<Arquivo> aux = new ArrayList<>();
+        if (!arquivos.isEmpty()) {
             for (Arquivo a : arquivos) {
                 if (a.getIpOrigem().equals(c.getIp())) {
-                    arquivos.remove(a);
+                    aux.add(a);
                 }
             }
         }
+        arquivos.removeAll(aux);
     }
 
     //Tratando todas as msgs em que o cliente manda para o servidor
