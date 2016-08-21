@@ -152,14 +152,17 @@ public class Servidor {
 
     //removendo os arquivos do cliente
     synchronized public void remArq(Cliente c) {
+        //lista auxiliar para remoção
         ArrayList<Arquivo> aux = new ArrayList<>();
         if (!arquivos.isEmpty()) {
             for (Arquivo a : arquivos) {
                 if (a.getIpOrigem().equals(c.getIp())) {
+                    //adicioando os itens para ser removido na lista aux
                     aux.add(a);
                 }
             }
         }
+        //removendo os itens
         arquivos.removeAll(aux);
     }
 
